@@ -1,6 +1,7 @@
 /*
 author:Lyn
-time:2018.10.5
+version1: 2018.10.5
+version2: 2018.10.8
 */
 enum Gender:Int {
     case male,female
@@ -9,7 +10,13 @@ enum Gender:Int {
     }
 
 }
-
+enum Department:String {
+        case CS,Math,Chinese,English,Unknown
+}
+protocol SchoolProtocol {
+    var department:Department {set get}
+    func lendBook()
+}
 class Person:CustomStringConvertible{
     var firstName:String
     var lastName:String
@@ -40,46 +47,66 @@ class Person:CustomStringConvertible{
         return p1.fullName != p2.fullName
         
     }
+    func run() {
+        print("Person \(self.fullName) is running")
+    }
     
 }
 
-class Teacher:Person{
+class Teacher:Person, SchoolProtocol{
     var title:String
-    init(firstName:String, lastName:String, gender:Gender, age:Int, title:String) {
-        self.title=title
+    var department:Department
+    init(firstName:String, lastName:String, gender:Gender, age:Int, title:String, department:Department) {
+        self.title = title
+        self.department = department
         super.init(firstName:firstName, lastName:lastName, gender:gender, age:age)
         
     }
     convenience init(firstName:String, lastName:String, title:String) {
-        self.init(firstName:firstName, lastName:lastName, gender:Gender.male, age:18, title:title)
+        self.init(firstName:firstName, lastName:lastName, gender:Gender.male, age:18, title:title, department:Department.Unknown)
     }
     //重载父类的属性
     override var description: String {
-        return "name=\(fullName), gender=\(gender), age=\(age), title=\(title)"
+        return "name=\(fullName), gender=\(gender), age=\(age), title=\(title), department=\(department)"
     }
+    override func run() {
+        print("Teacher \(self.fullName) is running")
+    }
+
+    func lendBook() {
+        print("Teacher \(self.fullName) lend successful")
+    } 
 }
 
-class Student:Person{
+class Student:Person, SchoolProtocol{
     var stuNo:String
-    init(firstName:String, lastName:String, gender:Gender, age:Int, stuNo:String) {
+    var department:Department
+    init(firstName:String, lastName:String, gender:Gender, age:Int, stuNo:String, department:Department) {
         self.stuNo = stuNo
+        self.department = department
         super.init(firstName:firstName, lastName:lastName, gender:gender, age:age)
         
     }
     convenience init(firstName:String, lastName:String, stuNo:String) {
-        self.init(firstName:firstName, lastName:lastName, gender:Gender.male, age:18, stuNo:stuNo)
+        self.init(firstName:firstName, lastName:lastName, gender:Gender.male, age:18, stuNo:stuNo, department:Department.Unknown)
     }
     //重载父类的属性
     override var description: String {
-        return "name=\(fullName), stuNo=\(stuNo), gender=\(gender), age=\(age)"
+        return "name=\(fullName), stuNo=\(stuNo), gender=\(gender), age=\(age), department=\(department)"
     }
+    override func run() {
+        print("Student \(self.fullName) is running")
+    }
+    func lendBook() {
+        print("Student \(self.fullName) lend successful")
+    } 
 }
 
 
 var p1 = Person(firstName:"Li", lastName:"Yin", gender: Gender.female, age:20)
 var p2 = Person(firstName:"Xie", lastName:"Xin")
-var s1=Student(firstName:"Xie",lastName:"Dabao",gender: Gender.male,age:16, stuNo:"2016110304")
-var t1=Teacher(firstName:"liu",lastName:"Yue",gender: Gender.male, age:50, title:"IOS")
+var s1 = Student(firstName:"Xie",lastName:"Dabao",gender: Gender.male,age:16, stuNo:"2016110304", department:Department.Math)
+var t1 = Teacher(firstName:"liu",lastName:"Yue",gender: Gender.male, age:50, title:"IOS", department:Department.CS)
 
 if p1 == p2 {
 	print("P1,P2 are the same person")
@@ -130,4 +157,18 @@ print("按照性别和年龄排序")
 persons.sort { return ($0.gender > $1.gender) && ($0.age > $1.age)  }
 for p in persons {
     print(p)
+}
+
+for p in persons {
+   if let t = p as? Teacher {  
+       t.run()
+       t.lendBook()
+    } 
+	else if let s = p as? Student {  
+       s.run()
+       s.lendBook()
+    } 
+	else {  
+        p.run()
+    }
 }
