@@ -1,3 +1,7 @@
+/*
+author:Lyn
+time:2018.10.5
+*/
 enum Gender:Int {
     case male,female
     static func >(g1: Gender, g2: Gender) -> Bool {
@@ -38,8 +42,7 @@ class Person:CustomStringConvertible{
     }
     
 }
-//var p1 = Person(name:"yin")
-//print(p1)
+
 class Teacher:Person{
     var title:String
     init(firstName:String, lastName:String, gender:Gender, age:Int, title:String) {
@@ -55,8 +58,6 @@ class Teacher:Person{
         return "name=\(fullName), gender=\(gender), age=\(age), title=\(title)"
     }
 }
-//var t1 = Teacher(firstName:"li", lastName:"yin",title:"teacher")
-//print(t1)
 
 class Student:Person{
     var stuNo:String
