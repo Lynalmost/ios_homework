@@ -38,3 +38,13 @@ print(str1)
 let str2 = str.replacingOccurrences(of:"OS", with:"")
 
 print(str2)
+//task3:将1、2题的时间和字符串存入一个字典中，并存入沙盒中的Document某文件中；
+let dic = ["date": ["Beijing": beijing, "Tokyo": tokyo, "NewYork": newyork, "London":london, "subString": str1]] as! AnyObject  //将字典转换为任意类型，便于后面写入文件
+
+//获取工作路径下的Document文件夹
+let fileManager = FileManager.default
+var path = fileManager.urls(for: .documentDirectory, in:.userDomainMask).first!
+
+path.appendPathComponent("dic.txt")
+
+try? dic.write(to: path, atomically: true)
