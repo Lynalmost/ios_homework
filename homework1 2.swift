@@ -3,6 +3,52 @@ author:Lyn
 version1: 2018.10.5
 version2: 2018.10.8
 */
+var primes=[Int]()
+var isPrimes=true;
+for i in 2...100 {
+    isPrimes = true
+    for j in 2..<i {
+        if (j%i == 0) {
+            isPrimes=false
+        }
+    }
+    if (isPrimes) {
+        primes.append(i);
+    }
+}
+
+func compare(x:Int, y:Int)->Bool {
+    return x>y
+}
+
+print("原数组：")
+print(primes)
+print("方法1 逆序：")
+primes.sort(by:compare)
+print(primes)
+
+primes.sort(by:{
+    (x:Int, y:Int)->Bool in
+    return x>y
+})
+print("方法2 逆序：")
+print(primes)
+primes.sort(by:{
+    (x,y) in
+    return x>y
+})
+print("方法3 逆序：")
+print(primes)
+primes.sort(by:{
+    (x,y) in
+    x>y
+})
+print("方法4 逆序：")
+print(primes)
+print("方法5 逆序：")
+primes.sort(by:{$0>$1})
+print(primes)
+
 enum Gender:Int {
     case male,female
     static func >(g1: Gender, g2: Gender) -> Bool {
